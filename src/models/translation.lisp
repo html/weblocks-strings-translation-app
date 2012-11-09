@@ -4,10 +4,11 @@
   ((id)
    (active :initform nil 
            :initarg :active 
-           :accessor :translation-string-active-p)
+           :accessor translation-string-active-p)
    (value :initform nil :initarg :value) 
    (time-last-used :initform (get-universal-time)) 
-   (time-created :initform (get-universal-time))))
+   (time-created :initform (get-universal-time)))
+  (:documentation "Database class, contains source strings which should be translated"))
 
 (defclass translation ()
   ((id)
@@ -24,7 +25,8 @@
      :accessor scope)
    (active :initform nil 
            :initarg :active 
-           :accessor translation-active-p)))
+           :accessor translation-active-p))
+  (:documentation "Database class, contains translation variants for strings, referenced to translation-string class"))
 
 (defmethod translations-count ((obj translation-string))
   (length (find-by-values 'translation :translation-string obj)))
