@@ -1,11 +1,13 @@
 (defpackage #:weblocks-strings-translation-app
   (:use :cl :weblocks
-        :f-underscore :anaphora)
+        :f-underscore :anaphora 
+        :weblocks-utils)
   (:import-from :hunchentoot #:header-in
-    #:set-cookie #:set-cookie* #:cookie-in
-    #:user-agent #:referer)
+                #:set-cookie #:set-cookie* #:cookie-in
+                #:user-agent #:referer)
+  (:export #:translate)
   (:documentation
-   "A web application based on Weblocks."))
+    "A web application based on Weblocks."))
 
 (in-package :weblocks-strings-translation-app)
 

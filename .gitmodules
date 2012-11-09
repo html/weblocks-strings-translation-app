@@ -1,0 +1,3 @@
+[submodule ".quicklisp/local-projects/weblocks-utils"]
+	path = .quicklisp/local-projects/weblocks-utils
+	url = git://github.com/html/weblocks-utils.git
