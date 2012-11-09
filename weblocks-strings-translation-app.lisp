@@ -5,7 +5,7 @@
   (:import-from :hunchentoot #:header-in
                 #:set-cookie #:set-cookie* #:cookie-in
                 #:user-agent #:referer)
-  (:export #:translate)
+  (:export #:translate #:translation-string #:translation)
   (:documentation
     "A web application based on Weblocks."))
 
@@ -26,10 +26,12 @@
 
 ;; Top level start & stop scripts
 
-(defun start-weblocks-strings-translation-app (&rest args)
+(defun start-weblocks-strings-translation-app (&rest args &key (store nil))
   "Starts the application by calling 'start-weblocks' with appropriate arguments."
   (apply #'start-weblocks args)
-  (start-webapp 'weblocks-strings-translation-app))
+  (start-webapp 'weblocks-strings-translation-app)
+  (when store 
+    (setf *weblocks-strings-translation-app-store* store)))
 
 (defun stop-weblocks-strings-translation-app ()
   "Stops the application by calling 'stop-weblocks'."
