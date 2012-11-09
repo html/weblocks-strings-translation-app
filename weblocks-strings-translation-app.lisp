@@ -5,7 +5,7 @@
   (:import-from :hunchentoot #:header-in
                 #:set-cookie #:set-cookie* #:cookie-in
                 #:user-agent #:referer)
-  (:export #:translate #:translation-string #:translation)
+  (:export #:translate #:translation-string #:translation #:set-language #:en #:ru #:uk #:*default-language* #:current-language)
   (:documentation
     "A web application based on Weblocks."))
 

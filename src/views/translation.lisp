@@ -28,14 +28,14 @@
          (en-translation 
            :present-as textarea 
            :reader #'en-translation
-           :writer (lang-translation-writer 'en))
+           :writer (lang-translation-writer :en))
          (uk-translation 
            :present-as textarea 
            :reader #'uk-translation
-           :writer (lang-translation-writer 'uk))
+           :writer (lang-translation-writer :uk))
          (ru-translation 
            :present-as textarea 
            :reader #'ru-translation
-           :writer (lang-translation-writer 'ru))
+           :writer (lang-translation-writer :ru))
          ;(scope :present-as text)
          (active :present-as checkbox :parse-as predicate))

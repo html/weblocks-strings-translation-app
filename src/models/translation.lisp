@@ -22,7 +22,7 @@
    (scope 
      :initform nil 
      :initarg :scope 
-     :accessor scope)
+     :accessor translation-scope)
    (active :initform nil 
            :initarg :active 
            :accessor translation-active-p))
@@ -33,9 +33,14 @@
 
 (defmacro define-lang-translation (lang)
   `(defmethod ,(intern (string-upcase (format nil "~A-TRANSLATION" lang))) ((obj translation-string))
-     (let ((translation (first (find-by-values 'translation :translation-string obj :scope (cons (list :lang ',lang) #'equal)))))
+     (let ((translation (first-by-values 'translation :translation-string obj :scope (cons (list :lang ,(intern (string-upcase lang) "KEYWORD")) #'equal))))
        (and translation (value translation))))) 
 
 (define-lang-translation en)
 (define-lang-translation uk)
 (define-lang-translation ru)
+
+(defun debug-all-translations-for-string (string)
+  (mapcar #'object->simple-plist 
+          (find-by-values 'translation 
+                          :translation-string (first-by-values 'translation-string :value string))))

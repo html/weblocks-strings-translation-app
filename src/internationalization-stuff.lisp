@@ -14,7 +14,9 @@
 
 (defun set-language (new-lang)
   (when (find (string-downcase new-lang) (mapcar #'string-downcase *languages-supported*) :test #'string=)
-    (setf (%current-language) (intern (string-upcase new-lang)))
+    (if (boundp 'hunchentoot:*session*)
+      (setf (%current-language) (intern (string-upcase new-lang) "KEYWORD"))
+      (setf *default-language* (intern (string-upcase new-lang) "KEYWORD")))
     
     t))
 
@@ -29,6 +31,9 @@
 
 (defun log-translation-missing (string args)
   #+l(format t "Translation is missing for string /~A/ and scope ~A" string args)
+  ; TODO: move this into firephp package
+  (when (and (find-package :firephp) (boundp 'hunchentoot:*reply*)) 
+    (funcall (symbol-function (intern "FB" "FIREPHP")) "Translation is missing for string" string args))
   string)
 
 (defun get-translated-string (string &rest args)
@@ -42,7 +47,7 @@
                                     :translation-string translation-string 
                                     :active t))
            (translation (or 
-                          (first (apply #'first-by-values (list* 'translation search-conditions))) 
+                          (apply #'first-by-values (list* 'translation search-conditions)) 
                           (progn
                             (setf (getf search-conditions :active) nil)
                             (or 
