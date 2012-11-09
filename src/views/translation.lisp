@@ -38,4 +38,4 @@
            :reader #'ru-translation
            :writer (lang-translation-writer 'ru))
          ;(scope :present-as text)
-         (active :present-as hidden))
+         (active :present-as checkbox :parse-as predicate))

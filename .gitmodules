@@ -1,3 +1,9 @@
 [submodule ".quicklisp/local-projects/weblocks-utils"]
 	path = .quicklisp/local-projects/weblocks-utils
 	url = git://github.com/html/weblocks-utils.git
+[submodule ".quicklisp/local-projects/weblocks-filtering-widget"]
+	path = .quicklisp/local-projects/weblocks-filtering-widget
+	url = git://github.com/html/weblocks-filtering-widget.git
+[submodule ".quicklisp/local-projects/cl-config"]
+	path = .quicklisp/local-projects/cl-config
+	url = git://github.com/html/cl-config.git

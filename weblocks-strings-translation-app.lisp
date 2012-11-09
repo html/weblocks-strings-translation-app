@@ -26,7 +26,7 @@
 
 ;; Top level start & stop scripts
 
-(defun start-weblocks-strings-translation-app (&rest args &key (store nil))
+(defun start-weblocks-strings-translation-app (&rest args &key (store nil) &allow-other-keys)
   "Starts the application by calling 'start-weblocks' with appropriate arguments."
   (apply #'start-weblocks args)
   (start-webapp 'weblocks-strings-translation-app)

@@ -10,7 +10,7 @@
      :author ""
      :licence ""
      :description "weblocks-strings-translation-app"
-     :depends-on (:weblocks :weblocks-utils)
+     :depends-on (:weblocks :weblocks-utils :weblocks-filtering-widget)
      :components ((:file "weblocks-strings-translation-app")
          (:module conf
           :components ((:file "stores"))
