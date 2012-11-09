@@ -6,7 +6,7 @@
                                        (slot-value (translation-string item) 'value)))
          (value :present-as excerpt)
          (active :present-as text :reader (lambda (item)
-                                            "Yes !"))
+                                            (when (translation-string-active-p item) "Yes !")))
          (en-translation :reader #'en-translation :present-as excerpt)
          (uk-translation :reader #'uk-translation :present-as excerpt)
          (ru-translation :reader #'ru-translation :present-as excerpt)
