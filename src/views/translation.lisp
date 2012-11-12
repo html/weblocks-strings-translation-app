@@ -17,7 +17,10 @@
     (let* ((opts (list 'translation 
                        :translation-string item 
                        :scope (list :lang lang)))
-           (translation (or (first (apply #'find-by-values opts)) (persist-object *default-store* (apply #'make-instance (append opts (list :active t))))))) 
+           (translation (or (first (apply #'find-by-values opts))
+                            (persist-object 
+                              *default-store* 
+                              (apply #'make-instance (append opts (list :active t))))))) 
            (setf (value translation) value))))
 
 (defview translation-edit-view (:type form :inherit-from '(:scaffold translation-string))

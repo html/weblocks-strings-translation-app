@@ -58,12 +58,11 @@
                                 (persist-object *default-store* (apply #'make-instance 
                                                                        (list* 'translation 
                                                                               (append search-conditions 
-                                                                                      (list :value 
-                                                                                            (if (equal 
-                                                                                                  (getf (getf search-conditions :scope) :lang)
-                                                                                                  (current-language)) 
-                                                                                              string
-                                                                                              "Untranslated")))))))))))) 
+                                                                                      (if (equal 
+                                                                                            (getf (getf search-conditions :scope) :lang)
+                                                                                            (current-language)) 
+                                                                                        (list :value string :active t)
+                                                                                        (list :value "Untranslated" :active nil)))))))))))) 
       (setf (slot-value translation-string 'time-last-used) (get-universal-time)) 
       (slot-value translation 'weblocks-strings-translation-app::value))))
 
@@ -81,9 +80,13 @@
         (write-char char output)))))
 
 (defun translate (string &rest args)
+  (if (and (find-package :firephp) (boundp 'hunchentoot:*reply*)) 
+    (funcall (symbol-function (intern "FB" "FIREPHP")) "Trying to translate" string args))
+
   (when (zerop (length string))
     (return-from translate string))
-  (if (find string *translated-table*)
+
+  (if (find string *translated-table* :test #'string=)
     string
     (let* ((splitted-str (cl-ppcre:split "(\\$[^\\$]+\\$)" (get-translated-string string :lang (current-language)) :with-registers-p t))
            (return-value 
@@ -92,25 +95,23 @@
                        (loop for i in splitted-str collect
                              (or 
                                (cl-ppcre:register-groups-bind (value)
-                                 ("\\$(.*)\\$" i)
-                                 (and value
-                                      (let* ((key (read-from-string (string-upcase (format nil ":~A" value))))
-                                             (value (getf args key)))
-                                        (unless key 
-                                          (error (format nil "Need key ~A for translation" key)))
-                                        (unless value 
-                                          (error (format nil "Need value for key ~A for translation" key)))
-                                        (and 
-                                          (progn 
-                                            (remf args key)
-                                            value)))))
+                                                              ("\\$(.*)\\$" i)
+                                                              (and value
+                                                                   (let* ((key (read-from-string (string-upcase (format nil ":~A" value))))
+                                                                          (value (getf args key)))
+                                                                     (unless key 
+                                                                       (error (format nil "Need key ~A for translation" key)))
+                                                                     (unless value 
+                                                                       (error (format nil "Need value for key ~A for translation" key)))
+                                                                     (and 
+                                                                       (progn 
+                                                                         (remf args key)
+                                                                         value)))))
                                i))
                        (when args
                          (error (format nil "Some keys do not correspond to their translate string value ~A" args))))))
-           (translated-string return-value #+l(cl-ppcre:regex-replace-all "[a-zA-Z]" return-value "#")))
+           (translated-string return-value))
       (push translated-string *translated-table*)
-      #+l(make-instance 'translated-string :value 
-                        (cl-ppcre:regex-replace-all "[a-zA-Z]" return-value "#"))
       translated-string)))
 
 (set-dispatch-macro-character #\# #\l
