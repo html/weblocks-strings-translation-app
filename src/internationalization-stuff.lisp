@@ -3,8 +3,8 @@
 (defvar *translated-table* nil)
 (defvar *translation-callbacks* nil)
 
-(defparameter *languages-supported* '(en ru uk))
-(defparameter *default-language* 'en)
+(defparameter *languages-supported* '(:en :ru :uk))
+(defparameter *default-language* :en)
 
 (defmacro %current-language ()
   `(webapp-session-value 'current-language weblocks::*session* (weblocks::find-app 'weblocks-strings-translation-app)))
