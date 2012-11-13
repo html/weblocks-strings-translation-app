@@ -1,5 +1,15 @@
 (in-package :weblocks-strings-translation-app)
 
+(defun debug-all-translations-for-string (string)
+  (mapcar #'object->simple-plist 
+          (find-by-values 'translation 
+                          :translation-string (first-by-values 'translation-string :value string))))
+
+(defun save-data (file-name)
+  (let ((prevalence-serialized-i18n::*translations* (all-of 'translation)))
+    (prevalence-serialized-i18n::save-data file-name))
+  t)
+
 ;; Define callback function to initialize new sessions
 (defun init-user-session (comp)
   (setf (composite-widgets comp)
@@ -16,7 +26,7 @@
                              (list 
                                :id :value
                                :caption "Value"
-                               :slot 'value)
+                               :slot 'prevalence-serialized-i18n::value)
                              (list 
                                :id :active
                                :caption "Active"

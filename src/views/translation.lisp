@@ -27,7 +27,7 @@
          #+l(translation-string :present-as text 
                              :reader (lambda (item)
                                        (slot-value (translation-string item) 'value)))
-         (value :present-as textarea)
+         (value :present-as textarea :writer (lambda (&rest args)))
          (en-translation 
            :present-as textarea 
            :reader #'en-translation
