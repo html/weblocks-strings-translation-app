@@ -1,3 +1,0 @@
-cl-config/cl-config.asd
-weblocks-utils/weblocks-utils.asd
-weblocks-filtering-widget/weblocks-filtering-widget.asd

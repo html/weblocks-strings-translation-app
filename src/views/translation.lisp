@@ -22,23 +22,42 @@
          (translations-count :reader (lambda (item)
                                        (length (find-by-values 'translation :translation-string item)))))
 
-#+l(find-by-values 'translation :translation-string (first (find-by-values 'translation-string :value "None")) 
-                :scope (cons (list :lang :ru) #'prevalence-serialized-i18n::langs-equal))
+; Warning, there are 2 copies of this function
+(defun get-translation-string-translation-for-lang (translation-string lang number-form)
+  (let ((translations)
+        (filtered-translations))
+    ; First filtering by lang scope
+    (setf filtered-translations 
+          (loop for i in (prevalence-serialized-i18n::translation-string-translations translation-string) 
+                if (equal (getf (prevalence-serialized-i18n::translation-scope i) :lang) lang)
+                collect i))
 
-(defun lang-translation-writer (lang)
+    (unless filtered-translations 
+      (return-from get-translation-string-translation-for-lang))
+
+    (setf translations filtered-translations)
+
+    ; Second filtering by number form
+    (setf filtered-translations 
+          (loop for i in (prevalence-serialized-i18n::translation-string-translations translation-string) 
+                if (equal (getf (prevalence-serialized-i18n::translation-scope i) :count) number-form)
+                collect i))
+
+    (first filtered-translations)))
+
+(defun lang-translation-writer (lang &optional number-form)
   (lambda (value item)
-    (let* ((opts (list 'translation 
-                       :translation-string item 
-                       :scope (cons (list :lang lang) #'prevalence-serialized-i18n::langs-equal)))
-           (item (first (apply #'find-by-values opts))))
+    (let* ((translation (get-translation-string-translation-for-lang item lang number-form)))
       (when (not (zerop (length value)))
-        (when (not item)
-          (setf item (persist-object 
-                       *default-store* 
-                       (apply #'make-instance 
-                              :scope (list :lang lang :active t)))))
-        (setf (value item) value)
-        (setf (slot-value item 'prevalence-serialized-i18n::active) t)))))
+        (when (not translation)
+          (setf translation (make-instance 
+                              'translation
+                              :translation-string item
+                              :scope (list :lang lang :count number-form :active t))))
+        (setf (value translation) value)
+        (setf (getf (prevalence-serialized-i18n::translation-scope translation) :count) number-form)
+        (setf (slot-value translation 'prevalence-serialized-i18n::active) t)
+        (persist-object *prevalence-serialized-i18n-store* translation)))))
 
 (defmacro capture-weblocks-output (&body body)
   `(let ((*weblocks-output-stream* (make-string-output-stream)))
@@ -47,12 +66,10 @@
 
 (defun/cc delete-translation-action (i)
   (lambda (&rest args)
-    (delete-one i)
-    (delete-persistent-object *default-store* i)
+    (delete-one i :store *prevalence-serialized-i18n-store*)
     (firephp:fb "looks like deleted ~A ~A" (object-id i) i)
     (loop for i in (get-widgets-by-type 'gridedit) do 
-          (mark-dirty i :propagate t)
-          (firephp:fb i))))
+          (mark-dirty i :propagate t))))
 
 (defview translation-edit-view (:type form :inherit-from '(:scaffold translation-string))
          #+l(translation-string :present-as text 
@@ -71,13 +88,25 @@
            :present-as textarea 
            :reader #'ru-translation
            :writer (lang-translation-writer :ru))
+         (ru-single-translation 
+           :present-as textarea 
+           :reader #'ru-translation
+           :writer (lang-translation-writer :ru :one))
+         (ru-few-translation 
+           :present-as textarea 
+           :reader #'ru-translation
+           :writer (lang-translation-writer :ru :few))
+         (ru-many-translation 
+           :present-as textarea 
+           :reader #'ru-translation
+           :writer (lang-translation-writer :ru :many))
          (debug-translations 
            :present-as html
            :reader (lambda (item)
                      (capture-weblocks-output 
                        (with-html 
                          (:ul
-                           (loop for i in (find-by-values 'translation :translation-string item) do 
+                           (loop for i in (prevalence-serialized-i18n::translation-string-translations item) do 
                                  (cl-who:htm 
                                    (:li (str (prin1-to-string (object->simple-plist i)))
                                     (render-link 

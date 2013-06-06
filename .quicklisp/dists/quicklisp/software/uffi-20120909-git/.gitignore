@@ -1,6 +1,0 @@
-copy
-uffi-*.tar.gz
-uffi-*.zip
-build-stamp
-build
-configure-stamp

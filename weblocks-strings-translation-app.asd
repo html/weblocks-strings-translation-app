@@ -5,12 +5,14 @@
 
 (defsystem weblocks-strings-translation-app
      :name "weblocks-strings-translation-app"
-     :version "0.0.2"
+     :version "0.0.3"
      :maintainer ""
      :author ""
      :licence ""
      :description "weblocks-strings-translation-app"
-     :depends-on (:weblocks :weblocks-utils :weblocks-filtering-widget :prevalence-serialized-i18n)
+     :depends-on 
+     (:weblocks :weblocks-utils :weblocks-filtering-widget :prevalence-serialized-i18n  
+      :weblocks-stores)
      :components ((:file "weblocks-strings-translation-app")
          (:module conf
           :components ((:file "stores"))

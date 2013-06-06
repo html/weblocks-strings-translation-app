@@ -1,1 +1,0 @@
-dists/quicklisp/software/weblocks-20120909-git/examples/weblocks-elephant-demo/weblocks-elephant-demo.asd

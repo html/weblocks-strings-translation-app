@@ -1,1 +1,0 @@
-dists/quicklisp/software/metatilities-20101006-darcs/metatilities-test.asd

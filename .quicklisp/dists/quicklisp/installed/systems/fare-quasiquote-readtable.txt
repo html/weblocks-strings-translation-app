@@ -1,1 +1,0 @@
-dists/quicklisp/software/fare-matcher-20120811-git/fare-quasiquote-readtable.asd

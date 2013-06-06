@@ -1,1 +1,0 @@
-dists/quicklisp/software/moptilities-20110110-http/moptilities-test.asd
