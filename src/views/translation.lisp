@@ -71,6 +71,23 @@
     (loop for i in (get-widgets-by-type 'gridedit) do 
           (mark-dirty i :propagate t))))
 
+(defun ru-lang-translation-reader ($count)
+  (lambda (translation-string)
+    (or 
+      (ignore-errors  
+        (value (first-by-values  
+                 'prevalence-serialized-i18n::translation 
+                 :translation-string translation-string
+                 :scope (cons 
+                          (list 
+                            :lang :ru 
+                            :count $count)
+                          (lambda (item1 item2)
+                            (and 
+                              (equal (getf item1 :lang) (getf item2 :lang))
+                              (equal (getf item1 :count) (getf item2 :count)))))
+                 :store *prevalence-serialized-i18n-store*))))))
+
 (defview translation-edit-view (:type form :inherit-from '(:scaffold translation-string))
          #+l(translation-string :present-as text 
                              :reader (lambda (item)
@@ -90,15 +107,15 @@
            :writer (lang-translation-writer :ru))
          (ru-single-translation 
            :present-as textarea 
-           :reader #'ru-translation
+           :reader  (ru-lang-translation-reader :one)
            :writer (lang-translation-writer :ru :one))
          (ru-few-translation 
            :present-as textarea 
-           :reader #'ru-translation
+           :reader (ru-lang-translation-reader :few)
            :writer (lang-translation-writer :ru :few))
          (ru-many-translation 
            :present-as textarea 
-           :reader #'ru-translation
+           :reader (ru-lang-translation-reader :many)
            :writer (lang-translation-writer :ru :many))
          (debug-translations 
            :present-as html

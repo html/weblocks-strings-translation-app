@@ -5,7 +5,7 @@
 
 (defsystem weblocks-strings-translation-app
      :name "weblocks-strings-translation-app"
-     :version "0.0.3"
+     :version "0.0.4"
      :maintainer ""
      :author ""
      :licence ""
