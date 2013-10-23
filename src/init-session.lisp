@@ -90,7 +90,14 @@
                        (cl-who:htm (:i "-&nbsp;&nbsp;")))
                      (setf (cdr call) (weblocks-i18n-scope->prevalence-serialized-i18n-scope (cdr call)))
                      (cl-who:esc (prin1-to-string call))
-                     (:br))))))))))
+                     (:br)))
+             (:br)
+             (:h1 "Widget translation table")
+             (:dl 
+               (loop for (key . value) in (widget-translation-table widget) do 
+                   (cl-who:htm 
+                     (:dt (cl-who:fmt ":~A" key))
+                     (:dd (str value))))))))))))
 
 (defmacro call-with-translation-app (&body body)
   `(weblocks::with-webapp 
