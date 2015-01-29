@@ -145,7 +145,11 @@
                                                     (list 
                                                       :id :translation-string
                                                       :caption "Translation string"
-                                                      :slot 'prevalence-serialized-i18n::translation-string)))
+                                                      :slot 'prevalence-serialized-i18n::translation-string)
+                                                    (list 
+                                                      :id :active
+                                                      :caption "Active"
+                                                      :slot 'prevalence-serialized-i18n::active)))
                                    grid)))
                 nil
                 )
