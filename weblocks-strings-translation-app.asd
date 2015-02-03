@@ -5,7 +5,7 @@
 
 (defsystem weblocks-strings-translation-app
      :name "weblocks-strings-translation-app"
-     :version "0.1.2"
+     :version "0.1.3"
      :maintainer "Olexiy Zamkoviy"
      :author "Olexiy Zamkoviy"
      :licence "LLGPL"

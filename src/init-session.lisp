@@ -34,7 +34,7 @@
                  (remf scope :items-count))))
 
     (setf (getf scope :form) (or (getf scope :form) word-form))
-    (setf (getf scope :lang) weblocks:*current-locale*)
+    (setf (getf scope :lang) (weblocks::current-locale))
     (setf (getf scope :count) (or (getf scope :count) count))
 
     scope))
