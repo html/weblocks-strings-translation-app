@@ -22,7 +22,7 @@
     :init-user-session 'weblocks-strings-translation-app::init-user-session
     :autostart nil                   ;; have to start the app manually
     :ignore-default-dependencies nil ;; accept the defaults
-    :js-backend :jquery
+    :js-backend :prototype
     :debug t
     )  
 
