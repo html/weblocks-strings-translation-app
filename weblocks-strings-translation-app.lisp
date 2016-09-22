@@ -38,3 +38,12 @@
   "Stops the application by calling 'stop-weblocks'."
   (stop-webapp 'weblocks-strings-translation-app)
   (stop-weblocks))
+
+(defmethod weblocks:weblocks-webapp-default-dependencies :around ((self weblocks-strings-translation-app))
+  (append 
+    (weblocks-prototype-js::weblocks-webapp-dependencies-for-backend self :prototype)
+    (call-next-method)))
+
+(defmethod initialize-webapp :after ((self weblocks-strings-translation-app))
+  ; Serving all files from scripts/ directory
+  (weblocks-prototype-js::weblocks-webapp-init-dependencies-for-backend self :prototype))

@@ -5,14 +5,14 @@
 
 (defsystem weblocks-strings-translation-app
      :name "weblocks-strings-translation-app"
-     :version "0.1.5"
+     :version "0.1.6"
      :maintainer "Olexiy Zamkoviy"
      :author "Olexiy Zamkoviy"
      :licence "LLGPL"
      :description "weblocks-strings-translation-app"
      :depends-on 
      (:weblocks :weblocks-utils :weblocks-filtering-widget :prevalence-serialized-i18n  
-      :weblocks-stores)
+      :weblocks-stores :weblocks-prototype-js)
      :components ((:file "weblocks-strings-translation-app")
          (:module src 
           :components 
